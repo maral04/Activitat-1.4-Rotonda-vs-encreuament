@@ -1,20 +1,25 @@
+//Primer creuament, el cotxe dret té preferència. El que ve d'amunt es para sempre i comprova que no hi hagi cap cotxe a punt.
+//Segon creuament, els cotxes suden de tot i només es paren si estàn MOOOOOLT aprop de xocar.
+
 Car myCar, myCar2;
 Carretera myCarretera;
 
 void setup() {
   size(1024, 512);
-  //myCarretera = new Carretera(color(255, 0, 0), 50, 125, 2); //Direcció 2, dreta.
-  myCar = new Car(color(0, 225, 45), 200, 150, 3);
-  myCar2 = new Car(color(255, 0, 0), 100, 150, 2);
+  myCarretera = new Carretera(color(145, 145, 145), 0, (height/2)-40, 2); //Direcció 2, dreta.
+  myCarretera2 = new Carretera(color(145, 145, 145), (width/2)-40, 0, 3); //Direcció 3, Aball.
+  myCar = new Car(color(0, 225, 45), 0, (height/2)-20, 5, 2); //El verd.
+  myCar2 = new Car(color(255, 0, 0), (width/2)-20, 0, 2, 3); //El vermell.
 }
 
 void draw() {
-  background(235,235,235);
-  //myCarretera.display();
-  myCar.drive(); 
+  background(235, 235, 235);
+  myCarretera.display();
+  myCarretera2.display();
   myCar.display();
-  myCar2.drive(); 
+  myCar.drive();
   myCar2.display();
+  myCar2.drive();
 }
 
 static class Car {
@@ -22,29 +27,47 @@ static class Car {
   int xpos;
   int ypos;
   int xspeed;
+  int direccioC;
 
-  Car(color tempC, int tempXpos, int tempYpos, int tempXspeed) {    
+  Car(color tempC, int tempXpos, int tempYpos, int tempXspeed, int direccio) {    
     c = tempC;   
     xpos = tempXpos;   
     ypos = tempYpos;   
     xspeed = tempXspeed;
+    direccioC = direccio;
   }
 
   void display() {
     stroke(0);
     fill(c);
-    //rectMode(CENTER);
-    rect(xpos, ypos, 60, 40);
+    if (direccioC == 2) {
+      rect(xpos, ypos, 60, 40);
+    } else {
+      if (direccioC == 3) {
+        rect(xpos, ypos, 40, 60);
+      }
+    }
   }
 
   void drive() {
-    xpos = xpos + xspeed;
-    if (xpos > width) {
-      xpos = 0;
+    if (direccioC == 2) {
+      xpos = xpos + xspeed;
+
+      if (xpos >= width) {
+        xpos = 0;
+      }
+    } else {
+      if (direccioC == 3) {
+        ypos = ypos + xspeed;
+
+        if (ypos >= height) {
+          ypos = 0;
+        }
+      }
     }
   }
 }
-/*
+
 static class Carretera {
 
   color c;
@@ -52,7 +75,7 @@ static class Carretera {
   int ypos;
   int direccioC;
 
-  Carreta(color tempC, int tempXpos, int tempYpos, int direccio) {
+  Carretera(color tempC, int tempXpos, int tempYpos, int direccio) {    
     c = tempC;   
     xpos = tempXpos;   
     ypos = tempYpos;   
@@ -60,11 +83,16 @@ static class Carretera {
   }
 
   void display() {
-    stroke(0);
+    noStroke();
     fill(c);
-    //rectMode(CENTER);
-    rect(xpos, ypos, 860, 80);
+    if (direccioC == 2) {
+      rect(xpos, ypos, 1024, 80);
+    } else {
+      if (direccioC == 3) {
+        rect(xpos, ypos, 80, 1024);
+      }
+    }
   }
-}*/
+}
 
 
