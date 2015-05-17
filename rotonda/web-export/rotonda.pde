@@ -1,5 +1,5 @@
-//Primer creuament, el cotxe dret té preferència. El que ve d'amunt es para sempre i comprova que no hi hagi cap cotxe a punt.
-//Segon creuament, els cotxes suden de tot i només es paren si estàn MOOOOOLT aprop de xocar.
+//Primera llei, el cotxe dret té preferència. El que ve d'amunt es para sempre i comprova que no hi hagi cap cotxe a punt.
+//Segona llei, els cotxes suden de tot i només es paren si estàn MOOOOOLT aprop de xocar.
 
 Car myCar, myCar2;
 Carretera myCarretera;
@@ -10,6 +10,8 @@ void setup() {
   myCarretera2 = new Carretera(color(145, 145, 145), (width/2)-40, 0, 3); //Direcció 3, Aball.
   myCar = new Car(color(0, 225, 45), 0, (height/2)-20, 5, 2); //El verd.
   myCar2 = new Car(color(255, 0, 0), (width/2)-20, 0, 2, 3); //El vermell.
+
+  boolean ojo = false;
 }
 
 void draw() {
@@ -17,9 +19,31 @@ void draw() {
   myCarretera.display();
   myCarretera2.display();
   myCar.display();
+  //if (ojo == false) {
   myCar.drive();
+  //}
   myCar2.display();
   myCar2.drive();
+  lleiNais(2);
+}
+
+void lleiNais(int tipusLlei) {
+  if (tipusLlei == 1) {
+  } else {
+    if (tipusLlei == 2) {
+      if (
+      (myCar.xpos)+30 >= (myCar2.xpos)-20 &&
+        (myCar.xpos)+20 <= (myCar2.xpos)+20
+
+        ) {
+          console.log("asd");
+        ojo = true;
+      } else {
+        //console.log(myCar.xpos+" "+myCar2.xpos);
+        ojo = false;
+      }
+    }
+  }
 }
 
 static class Car {
