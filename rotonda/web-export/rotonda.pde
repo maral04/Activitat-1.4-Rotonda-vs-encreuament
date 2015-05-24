@@ -3,6 +3,9 @@
 
 Car myCar, myCar2;
 Carretera myCarretera;
+boolean ojo = false;
+boolean debugg = true;
+int distanciaPreventiva = 450;
 
 void setup() {
   size(1024, 512);
@@ -10,8 +13,6 @@ void setup() {
   myCarretera2 = new Carretera(color(145, 145, 145), (width/2)-40, 0, 3); //Direcció 3, Aball.
   myCar = new Car(color(0, 225, 45), 0, (height/2)-20, 5, 2); //El verd.
   myCar2 = new Car(color(255, 0, 0), (width/2)-20, 0, 2, 3); //El vermell.
-
-  boolean ojo = false;
 }
 
 void draw() {
@@ -19,12 +20,16 @@ void draw() {
   myCarretera.display();
   myCarretera2.display();
   myCar.display();
-  //if (ojo == false) {
   myCar.drive();
-  //}
   myCar2.display();
-  myCar2.drive();
+  if (ojo != true) {
+    myCar2.drive();
+  }
   lleiNais(2);
+  if(debugg == true){
+    rect((width/2)-2.5, (height/2)-myCar2.carH, 5, 5);
+    rect((width/2)-2.5, (height/2)-(myCar2.carH*2), 5, 5);
+  }
 }
 
 void lleiNais(int tipusLlei) {
@@ -32,15 +37,24 @@ void lleiNais(int tipusLlei) {
   } else {
     if (tipusLlei == 2) {
       if (
-      (myCar.xpos)+30 >= (myCar2.xpos)-20 &&
-        (myCar.xpos)+20 <= (myCar2.xpos)+20
-
-        ) {
-          console.log("asd");
+      (myCar2.ypos)+myCar2.carH <= (height/2)-myCar2.carH &&
+      (myCar2.ypos)+myCar2.carH >= (height/2)-myCar2.carH &&
+      (myCar.xpos)-myCar.carW >= (width/2)-distanciaPreventiva &&
+      (myCar.xpos)-myCar.carW <= (width/2)+100
+       
+       /* (myCar.xpos)-20 <= (myCar.xpos)+30 &&
+       (myCar2.xpos)+20 >= (myCar.xpos)+20*/
+      ) {
+        if(debugg == true){
+          console.log("Parat.");
+        }
+        //console.log(((myCar2.xpos)-20)+" "+(myCar2.xpos)+20);
         ojo = true;
       } else {
-        //console.log(myCar.xpos+" "+myCar2.xpos);
-        ojo = false;
+        if ((myCar.xpos)-50 >= (width/2)+100) {
+          //console.log(myCar.xpos+" "+myCar2.xpos);
+          ojo = false;
+        }
       }
     }
   }
@@ -52,6 +66,8 @@ static class Car {
   int ypos;
   int xspeed;
   int direccioC;
+  int carW;
+  int carH;
 
   Car(color tempC, int tempXpos, int tempYpos, int tempXspeed, int direccio) {    
     c = tempC;   
@@ -59,16 +75,26 @@ static class Car {
     ypos = tempYpos;   
     xspeed = tempXspeed;
     direccioC = direccio;
+    if (direccioC == 2) {
+      carW = 60;
+      carH = 40;
+    } else {
+      if (direccioC == 3) {
+        carH = 60;
+        carW = 40;
+      }
+    }
   }
 
   void display() {
+
     stroke(0);
     fill(c);
     if (direccioC == 2) {
-      rect(xpos, ypos, 60, 40);
+      rect(xpos, ypos, carW, carH);
     } else {
       if (direccioC == 3) {
-        rect(xpos, ypos, 40, 60);
+        rect(xpos, ypos, carW, carH);
       }
     }
   }
@@ -110,10 +136,10 @@ static class Carretera {
     noStroke();
     fill(c);
     if (direccioC == 2) {
-      rect(xpos, ypos, 1024, 80);
+      rect(xpos, ypos, width, 80);
     } else {
       if (direccioC == 3) {
-        rect(xpos, ypos, 80, 1024);
+        rect(xpos, ypos, 80, width);
       }
     }
   }
